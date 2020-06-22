@@ -3,8 +3,11 @@ package com.example.mymoviesapplication;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.mymoviesapplication.adapter.MoviesAdapter;
@@ -28,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean isFetchingMovies;
     private int currentPage = 1;
 
+    private String sortBy = MoviesRepository.POPULAR;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +46,55 @@ public class MainActivity extends AppCompatActivity {
         setupOnScrollListener();
         getGenres();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_movies, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sort:
+                showSortMenu();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void showSortMenu() {
+        PopupMenu sortMenu = new PopupMenu(this, findViewById(R.id.sort));
+        sortMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                /*
+                 * Every time we sort, we need to go back to page 1
+                 */
+                currentPage = 1;
+
+                switch (item.getItemId()) {
+                    case R.id.popular:
+                        sortBy = MoviesRepository.POPULAR;
+                        getMovies(currentPage);
+                        return true;
+                    case R.id.top_rated:
+                        sortBy = MoviesRepository.TOP_RATED;
+                        getMovies(currentPage);
+                        return true;
+                    case R.id.upcoming:
+                        sortBy = MoviesRepository.UPCOMING;
+                        getMovies(currentPage);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        sortMenu.inflate(R.menu.menu_movies_sort);
+        sortMenu.show();
     }
 
     private void setupOnScrollListener() {
@@ -79,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getMovies(int page) {
         isFetchingMovies = true;
-        moviesRepository.getMovies(page,new OnGetMoviesCallback() {
+        moviesRepository.getMovies(page,sortBy,new OnGetMoviesCallback() {
             @Override
             public void onSuccess(int page, List<Movie> movies) {
                 Log.d("MoviesRepository", "Current Page = " + page);
@@ -87,6 +141,9 @@ public class MainActivity extends AppCompatActivity {
                     adapter = new MoviesAdapter(movies, movieGenres);
                     moviesList.setAdapter(adapter);
                 } else {
+                    if(page==1){
+                        adapter.clearMovies();
+                    }
                     adapter.appendMovies(movies);
                 }
                 currentPage = page;
