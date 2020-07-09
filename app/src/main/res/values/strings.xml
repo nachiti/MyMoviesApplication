@@ -4,5 +4,6 @@
     <string name="popular">Popular</string>
     <string name="top_rated">Top Rated</string>
     <string name="upcoming">Upcoming</string>
+    <string name="now_playing">Now Playing</string>
     <string name="TMDB_API_KEY">1e5c997fdc17d0449bbe0a83854fd1ec</string>
 </resources>

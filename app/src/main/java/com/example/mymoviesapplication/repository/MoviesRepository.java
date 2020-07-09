@@ -5,9 +5,11 @@ import android.util.Log;
 
 import com.example.mymoviesapplication.BuildConfig;
 import com.example.mymoviesapplication.model.GenresResponse;
+import com.example.mymoviesapplication.model.Movie;
 import com.example.mymoviesapplication.model.MoviesResponse;
-import com.example.mymoviesapplication.network.OnGetGenresCallback;
-import com.example.mymoviesapplication.network.OnGetMoviesCallback;
+import com.example.mymoviesapplication.Inter.OnGetGenresCallback;
+import com.example.mymoviesapplication.Inter.OnGetMovieCallback;
+import com.example.mymoviesapplication.Inter.OnGetMoviesCallback;
 import com.example.mymoviesapplication.network.TMDbApi;
 
 import retrofit2.Call;
@@ -24,6 +26,7 @@ public class MoviesRepository {
     public static final String POPULAR = "popular";
     public static final String TOP_RATED = "top_rated";
     public static final String UPCOMING = "upcoming";
+    public static final String NOW_PLAYING = "now_playing";
 
     private static MoviesRepository repository;
 
@@ -180,6 +183,12 @@ public class MoviesRepository {
                 api.getUpcomingMovies(BuildConfig.TMDB_API_KEY, LANGUAGE, page)
                         .enqueue(call);
                 break;
+                //
+            case NOW_PLAYING:
+                api.getNowPlayingMovies(BuildConfig.TMDB_API_KEY, LANGUAGE, page)
+                        .enqueue(call);
+                break;
+            //
             case POPULAR:
             default:
                 api.getPopularMovies(BuildConfig.TMDB_API_KEY, LANGUAGE, page)
@@ -208,6 +217,32 @@ public class MoviesRepository {
 
                     @Override
                     public void onFailure(Call<GenresResponse> call, Throwable t) {
+                        callback.onError();
+                    }
+                });
+
+    }
+
+    // get DETAIL OF MOVIE BY ID
+    public void getMovie(int movieId, final OnGetMovieCallback callback) {
+        api.getMovie(movieId, BuildConfig.TMDB_API_KEY, LANGUAGE)
+                .enqueue(new Callback<Movie>() {
+                    @Override
+                    public void onResponse(Call<Movie> call, Response<Movie> response) {
+                        if (response.isSuccessful()) {
+                            Movie movie = response.body();
+                            if (movie != null) {
+                                callback.onSuccess(movie);
+                            } else {
+                                callback.onError();
+                            }
+                        } else {
+                            callback.onError();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Movie> call, Throwable t) {
                         callback.onError();
                     }
                 });

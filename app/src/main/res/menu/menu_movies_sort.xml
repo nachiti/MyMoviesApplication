@@ -17,5 +17,10 @@
         android:enabled="true"
         android:title="Upcoming"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/now_playing"
+        android:enabled="true"
+        android:title="Now Playing"
+        app:showAsAction="never" />
 
 </menu>
