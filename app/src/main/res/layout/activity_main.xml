@@ -39,21 +39,22 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints"
         tools:listitem="@layout/item_movie" />
+    <!--
+        <Button
+            android:id="@+id/favbtn"
+            android:layout_width="416dp"
+            android:layout_height="41dp"
+            android:layout_centerHorizontal="true"
 
-    <Button
-        android:id="@+id/favbtn"
-        android:layout_width="416dp"
-        android:layout_height="41dp"
-        android:layout_centerHorizontal="true"
+            android:layout_marginBottom="4dp"
 
-        android:layout_marginBottom="4dp"
-
-        android:text="favourite list"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.685"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints" />
+            android:text="favourite list"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.685"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="MissingConstraints" />
+        -->
 
 
-</android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>

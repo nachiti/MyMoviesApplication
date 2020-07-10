@@ -119,11 +119,11 @@ public class MovieActivity extends AppCompatActivity {
         });
     }
 
-  /*  @Override
+   @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
-    }*/
+    }
 
     @Override
     protected void onResume() {
@@ -139,7 +139,9 @@ public class MovieActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        MovieActivity.this.finish();
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
+
     }
 
     @Override

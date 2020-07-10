@@ -55,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
         recycleVewMoviesList = findViewById(R.id.movies_list);
         recycleVewMoviesList.setLayoutManager(new LinearLayoutManager(this));
 
-        btn =findViewById(R.id.favbtn);
+        // Oled button for test
+       /* btn =findViewById(R.id.favbtn);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this,FavoriteListActivity.class));
             }
         });
+        */
 
         favoriteDatabase= Room.databaseBuilder(getApplicationContext(),FavoriteDatabase.class,"myfavdb").allowMainThreadQueries().build();
 
@@ -224,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
     }
 
     @Override
@@ -231,11 +234,13 @@ public class MainActivity extends AppCompatActivity {
         super.onRestart();
         finish();
 
+
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
 
     }
 
