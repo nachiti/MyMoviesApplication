@@ -44,11 +44,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
     @Override
     public void onBindViewHolder(final MovieViewHolder holder, int position) {
-        System.out.println("47 onBindViewHolder");
         final Movie movieList = movies.get(position);
         holder.bind(movies.get(position));
-// for favorite
 
+        // for favorite
         if (MainActivity.favoriteDatabase.favoriteDao().isFavorite(movieList.getId())==1) {
             holder.fav_btn.setImageResource(R.drawable.favourite);//noir
             System.out.println("white");
@@ -125,6 +124,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
         }
 
+        /**
+         * rempler les champs des movie par les inforlation recupere
+         * @param movie
+         */
         public void bind(Movie movie) {
 
             this.movie = movie;

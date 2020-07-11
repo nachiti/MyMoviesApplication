@@ -44,11 +44,18 @@ public class FavoriteListActivity extends AppCompatActivity {
             showListNotEmpty();
         }
     }
-
+    /**
+     * test se la list des favorites est vide ou non.
+     * @param favoriteLists
+     * @return true ou false
+     */
     public boolean listFavorisIsEmpty(List<FavoriteList> favoriteLists){
         return favoriteLists.isEmpty();
     }
 
+    /**
+     * afficher list vide sino il affiche la liste des favorites
+     */
     public void showListEmpty(){
         imageViewEmpty.setVisibility(View.VISIBLE);
         rv.setVisibility(View.GONE);
@@ -57,7 +64,10 @@ public class FavoriteListActivity extends AppCompatActivity {
         imageViewEmpty.setVisibility(View.GONE);
         rv.setVisibility(View.VISIBLE);
     }
-
+    /**
+     * suppression d un favorite de la liste
+     * @param position
+     */
     public void removeItem(int position){
         MainActivity.favoriteDatabase.favoriteDao().delete(favoriteLists.get(position));
         favoriteLists.remove(position);
@@ -70,6 +80,9 @@ public class FavoriteListActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * selection des favorites a partire du base donne
+     */
     private void getFavData() {
 
        favoriteLists = MainActivity.favoriteDatabase.favoriteDao().getFavoriteData();
@@ -85,7 +98,6 @@ public class FavoriteListActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-
     }
 
     @Override

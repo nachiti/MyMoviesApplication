@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.mymoviesapplication.MainActivity;
 import com.example.mymoviesapplication.R;
 import com.example.mymoviesapplication.model.FavoriteList;
 
@@ -46,9 +45,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        System.out.println("39 FavoriteAdapter onBindViewHolder");
         viewHolder.bind(favoriteLists.get(position));
-
     }
 
     @Override
@@ -74,6 +71,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
             poster      = itemView.findViewById(R.id.fitem_movie_poster);
             fav_btn_delete = itemView.findViewById(R.id.fitem_movie_fav_btn_delete);
 
+            // suprrimer favorite de la liste des favorites
             fav_btn_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -89,23 +87,18 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                 }
             });
 
-
-
-         /*   fav_btn_delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                 //   MainActivity.favoriteDatabase.favoriteDao().delete(favoriteList);
-                }
-            });*/
-
         }
 
+
+        /**
+         * rempler les champs de la liste favories par les informaton recupere par favoritelist
+         * @param favoriteList
+         */
         public void bind(FavoriteList favoriteList) {
 
             this.favoriteList = favoriteList;
             title.setText(favoriteList.getTitle());
             System.out.println("titleeeeeeeeeeeeeeee       :" +title.getText());
-//            releaseDate.setText(favoriteList.getReleaseDate().split("-")[0]);
             releaseDate.setText(favoriteList.getReleaseDate());
 
             System.out.println("releaseDateeeeeeeeeeeeee    :" +releaseDate.getText());

@@ -49,68 +49,6 @@ public class MoviesRepository {
         return repository;
     }
 
-//    public void getMovies(final OnGetMoviesCallback callback) {
-//        api.getPopularMovies(BuildConfig.TMDB_API_KEY, LANGUAGE, 1)
-//                .enqueue(new Callback<MoviesResponse>() {
-//                    @Override
-//                    public void onResponse(@NonNull Call<MoviesResponse> call, @NonNull Response<MoviesResponse> response) {
-//                        if (response.isSuccessful()) {
-//                            MoviesResponse moviesResponse = response.body();
-//                            if (moviesResponse != null && moviesResponse.getMovies() != null) {
-//                                callback.onSuccess(moviesResponse.getMovies());
-//                            } else {
-//                                callback.onError();
-//                            }
-//                        } else {
-//                            callback.onError();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<MoviesResponse> call, Throwable t) {
-//                        callback.onError();
-//                    }
-//                });
-//    }
-
-//    public void getMovies(int page, String sortBy, final OnGetMoviesCallback callback) {
-//        Callback<MoviesResponse> call = new Callback<MoviesResponse>() {
-//            @Override
-//            public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
-//                if (response.isSuccessful()) {
-//                    MoviesResponse moviesResponse = response.body();
-//                    if (moviesResponse != null && moviesResponse.getMovies() != null) {
-//                        callback.onSuccess(moviesResponse.getPage(), moviesResponse.getMovies());
-//                    } else {
-//                        callback.onError();
-//                    }
-//                } else {
-//                    callback.onError();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<MoviesResponse> call, Throwable t) {
-//                callback.onError();
-//            }
-//        };
-//
-//        switch (sortBy) {
-//            case TOP_RATED:
-//                api.getTopRatedMovies(BuildConfig.TMDB_API_KEY, LANGUAGE, page)
-//                        .enqueue(call);
-//                break;
-//            case UPCOMING:
-//                api.getUpcomingMovies(BuildConfig.TMDB_API_KEY, LANGUAGE, page)
-//                        .enqueue(call);
-//                break;
-//            case POPULAR:
-//            default:
-//                api.getPopularMovies(BuildConfig.TMDB_API_KEY, LANGUAGE, page)
-//                        .enqueue(call);
-//                break;
-//        }
-
         public void getMovies(int page, final OnGetMoviesCallback callback) {
             Log.d("MoviesRepository", "Next Page = " + page);
             api.getPopularMovies(BuildConfig.TMDB_API_KEY, LANGUAGE, page)
@@ -135,22 +73,6 @@ public class MoviesRepository {
                         }
                     });
         }
-//        switch (sortBy) {
-//            case TOP_RATED:
-//                api.getTopRatedMovies(BuildConfig.TMDB_API_KEY, LANGUAGE, page)
-//                        .enqueue(call);
-//                break;
-//            case UPCOMING:
-//                api.getUpcomingMovies(BuildConfig.TMDB_API_KEY, LANGUAGE, page)
-//                        .enqueue(call);
-//                break;
-//            case POPULAR:
-//            default:
-//                api.getPopularMovies(BuildConfig.TMDB_API_KEY, LANGUAGE, page)
-//                        .enqueue(call);
-//                break;
-
-    //    }
 
     public void getMovies(int page, String sortBy, final OnGetMoviesCallback callback) {
         Callback<MoviesResponse> call = new Callback<MoviesResponse>() {
@@ -197,7 +119,10 @@ public class MoviesRepository {
         }
     }
 
-
+    /**
+     * recupere les generes de movie
+     * @param callback
+     */
     public void getGenres(final OnGetGenresCallback callback) {
         api.getGenres(BuildConfig.TMDB_API_KEY, LANGUAGE)
                 .enqueue(new Callback<GenresResponse>() {
@@ -223,7 +148,11 @@ public class MoviesRepository {
 
     }
 
-    // get DETAIL OF MOVIE BY ID
+    /**
+     * get DETAIL OF MOVIE BY ID
+     * @param movieId
+     * @param callback
+     */
     public void getMovie(int movieId, final OnGetMovieCallback callback) {
         api.getMovie(movieId, BuildConfig.TMDB_API_KEY, LANGUAGE)
                 .enqueue(new Callback<Movie>() {
@@ -247,5 +176,4 @@ public class MoviesRepository {
                     }
                 });
     }
-
 }

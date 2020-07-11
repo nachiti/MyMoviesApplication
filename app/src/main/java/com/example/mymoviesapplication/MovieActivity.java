@@ -73,6 +73,9 @@ public class MovieActivity extends AppCompatActivity {
         getMovie();
     }
 
+    /**
+     * remplir l activity par les information recupere via api
+     */
     private void getMovie() {
         moviesRepository.getMovie(movieId, new OnGetMovieCallback() {
             @Override
@@ -99,6 +102,10 @@ public class MovieActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * reuperer les generes pour movie
+     * @param movie
+     */
     private void getGenres(final Movie movie) {
         moviesRepository.getGenres(new OnGetGenresCallback() {
             @Override

@@ -55,19 +55,7 @@ public class MainActivity extends AppCompatActivity {
         recycleVewMoviesList = findViewById(R.id.movies_list);
         recycleVewMoviesList.setLayoutManager(new LinearLayoutManager(this));
 
-        // Oled button for test
-       /* btn =findViewById(R.id.favbtn);
-
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,FavoriteListActivity.class));
-            }
-        });
-        */
-
         favoriteDatabase= Room.databaseBuilder(getApplicationContext(),FavoriteDatabase.class,"myfavdb").allowMainThreadQueries().build();
-
 
         setupOnScrollListener();
         getGenres();
@@ -80,6 +68,13 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * depend de la item clicker se lance une methode :
+     *      - soit afficher les itemes de menu
+     *      - soit afficher la list favories.
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -94,6 +89,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * afficher les item du menu
+     */
     private void showSortMenu() {
         PopupMenu sortMenu = new PopupMenu(this, findViewById(R.id.sort));
         sortMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -130,6 +128,9 @@ public class MainActivity extends AppCompatActivity {
         sortMenu.show();
     }
 
+    /**
+     *
+     */
     private void setupOnScrollListener() {
         final LinearLayoutManager manager = new LinearLayoutManager(this);
         recycleVewMoviesList.setLayoutManager(manager);
@@ -164,6 +165,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * recuperer the movie par rapport a une page
+     * @param page
+     */
+
     private void getMovies(int page) {
         isFetchingMovies = true;
         moviesRepository.getMovies(page,sortBy,new OnGetMoviesCallback() {
@@ -172,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("MoviesRepository", "Current Page = " + page);
                 if (adapter == null) {
                     adapter = new MoviesAdapter(movies, movieGenres,callback);
-                    recycleVewMoviesList.setAdapter(adapter);
+                   recycleVewMoviesList.setAdapter(adapter);
                 } else {
                     if(page==1){
                         adapter.clearMovies();
@@ -226,22 +232,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        finish();
-
-
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
-
     }
 
     @Override

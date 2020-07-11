@@ -55,8 +55,6 @@ public class Movie {
         return overview;
     }
 
-
-
     @SerializedName("genres")
     @Expose
     private List<Genre> genres;
