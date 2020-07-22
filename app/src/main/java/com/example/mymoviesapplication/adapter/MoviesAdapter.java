@@ -135,11 +135,20 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             title.setText(movie.getTitle());
             rating.setText(String.valueOf(movie.getRating()));
             genres.setText(getGenres(movie.getGenreIds()));
+            if(movie.getPosterPath() == null){
+                Glide.with(itemView)
+                        .load( R.drawable.empty)
+                        .apply(RequestOptions.placeholderOf(R.color.colorPrimary))
+                        .into(poster);
 
-            Glide.with(itemView)
-                    .load(IMAGE_URL + movie.getPosterPath())
-                    .apply(RequestOptions.placeholderOf(R.color.colorPrimary))
-                    .into(poster);
+            }else
+            {
+                Glide.with(itemView)
+                        .load(IMAGE_URL + movie.getPosterPath())
+                        .apply(RequestOptions.placeholderOf(R.color.colorPrimary))
+                        .into(poster);
+            }
+
 
 
         }

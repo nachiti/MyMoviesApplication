@@ -2,6 +2,7 @@
     <string name="app_name">MyMoviesApplication</string>
 
     <string name="popular">Popular</string>
+    <string name="enter_search_keyword">Search Movie Titles</string>
     <string name="top_rated">Top Rated</string>
     <string name="upcoming">Upcoming</string>
     <string name="now_playing">Now Playing</string>

@@ -1,6 +1,5 @@
 package com.example.mymoviesapplication.network;
 
-import android.support.annotation.ColorLong;
 
 import com.example.mymoviesapplication.model.GenresResponse;
 import com.example.mymoviesapplication.model.Movie;
@@ -14,11 +13,31 @@ import retrofit2.http.Query;
 public interface TMDbApi {
 
     /**
-     *  Get the primary information about a movie
-     * @param id id du movie
-     * @param apiKEy  clé de l'api
-     * @param language  langue du movie
-     * @return  movie
+     * Search for movies by title
+     *
+     * @param searchTerm
+     * @param apiKEy
+     * @param language
+     * @param page
+     * @return list of movie
+     */
+    @GET("search/movie")
+    Call<MoviesResponse> searchTitles(
+            @Query("query") String searchTerm,
+            @Query("api_key") String apiKEy,
+            @Query("language") String language,
+            @Query("page") int page
+
+    );
+
+
+    /**
+     * Get the primary information about a movie
+     *
+     * @param id       id du movie
+     * @param apiKEy   clé de l'api
+     * @param language langue du movie
+     * @return movie
      */
     @GET("movie/{movie_id}")
     Call<Movie> getMovie(
@@ -29,10 +48,11 @@ public interface TMDbApi {
 
     /**
      * Get the top rated movies.
+     *
      * @param apiKey
      * @param language
      * @param page
-     * @return
+     * @return list of movie
      */
     @GET("movie/top_rated")
     Call<MoviesResponse> getTopRatedMovies(
@@ -43,9 +63,10 @@ public interface TMDbApi {
 
     /**
      * Get the list of official genres for movies.
+     *
      * @param apiKey
      * @param language
-     * @return
+     * @return list of movie
      */
     @GET("genre/movie/list")
     Call<GenresResponse> getGenres(
@@ -55,10 +76,11 @@ public interface TMDbApi {
 
     /**
      * Get a list of upcoming movies in theatres
+     *
      * @param apiKey
      * @param language
      * @param page
-     * @return
+     * @return list of movie
      */
     @GET("movie/upcoming")
     Call<MoviesResponse> getUpcomingMovies(
@@ -69,10 +91,11 @@ public interface TMDbApi {
 
     /**
      * Get a list of movies in theatres
+     *
      * @param apiKey
      * @param language
      * @param page
-     * @return
+     * @return list of movie
      */
     @GET("movie/now_playing")
     Call<MoviesResponse> getNowPlayingMovies(
@@ -83,10 +106,11 @@ public interface TMDbApi {
 
     /**
      * Get a list of the current popular movies.
+     *
      * @param apiKey
      * @param language
      * @param page
-     * @return
+     * @return list of movie
      */
     @GET("movie/popular")
     Call<MoviesResponse> getPopularMovies(

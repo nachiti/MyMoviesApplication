@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.mymoviesapplication.BuildConfig;
+import com.example.mymoviesapplication.Inter.OnGetRepositoryCallback;
 import com.example.mymoviesapplication.model.GenresResponse;
 import com.example.mymoviesapplication.model.Movie;
 import com.example.mymoviesapplication.model.MoviesResponse;
@@ -20,6 +21,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MoviesRepository {
 
+    private static final String TAG = MoviesRepository.class.getSimpleName();
+
     private static final String BASE_URL = "https://api.themoviedb.org/3/";
     private static final String LANGUAGE = "en-US";
 
@@ -27,6 +30,8 @@ public class MoviesRepository {
     public static final String TOP_RATED = "top_rated";
     public static final String UPCOMING = "upcoming";
     public static final String NOW_PLAYING = "now_playing";
+    public static final String SEARCH = "search";
+
 
     private static MoviesRepository repository;
 
@@ -49,30 +54,30 @@ public class MoviesRepository {
         return repository;
     }
 
-        public void getMovies(int page, final OnGetMoviesCallback callback) {
-            Log.d("MoviesRepository", "Next Page = " + page);
-            api.getPopularMovies(BuildConfig.TMDB_API_KEY, LANGUAGE, page)
-                    .enqueue(new Callback<MoviesResponse>() {
-                        @Override
-                        public void onResponse(@NonNull Call<MoviesResponse> call, @NonNull Response<MoviesResponse> response) {
-                            if (response.isSuccessful()) {
-                                MoviesResponse moviesResponse = response.body();
-                                if (moviesResponse != null && moviesResponse.getMovies() != null) {
-                                    callback.onSuccess(moviesResponse.getPage(), moviesResponse.getMovies());
-                                } else {
-                                    callback.onError();
-                                }
+    public void getMovies(int page, final OnGetMoviesCallback callback) {
+        Log.d("MoviesRepository", "Next Page = " + page);
+        api.getPopularMovies(BuildConfig.TMDB_API_KEY, LANGUAGE, page)
+                .enqueue(new Callback<MoviesResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<MoviesResponse> call, @NonNull Response<MoviesResponse> response) {
+                        if (response.isSuccessful()) {
+                            MoviesResponse moviesResponse = response.body();
+                            if (moviesResponse != null && moviesResponse.getMovies() != null) {
+                                callback.onSuccess(moviesResponse.getPage(), moviesResponse.getMovies());
                             } else {
                                 callback.onError();
                             }
-                        }
-
-                        @Override
-                        public void onFailure(Call<MoviesResponse> call, Throwable t) {
+                        } else {
                             callback.onError();
                         }
-                    });
-        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<MoviesResponse> call, Throwable t) {
+                        callback.onError();
+                    }
+                });
+    }
 
     public void getMovies(int page, String sortBy, final OnGetMoviesCallback callback) {
         Callback<MoviesResponse> call = new Callback<MoviesResponse>() {
@@ -105,7 +110,7 @@ public class MoviesRepository {
                 api.getUpcomingMovies(BuildConfig.TMDB_API_KEY, LANGUAGE, page)
                         .enqueue(call);
                 break;
-                //
+            //
             case NOW_PLAYING:
                 api.getNowPlayingMovies(BuildConfig.TMDB_API_KEY, LANGUAGE, page)
                         .enqueue(call);
@@ -121,6 +126,7 @@ public class MoviesRepository {
 
     /**
      * recupere les generes de movie
+     *
      * @param callback
      */
     public void getGenres(final OnGetGenresCallback callback) {
@@ -150,6 +156,7 @@ public class MoviesRepository {
 
     /**
      * get DETAIL OF MOVIE BY ID
+     *
      * @param movieId
      * @param callback
      */
@@ -176,4 +183,44 @@ public class MoviesRepository {
                     }
                 });
     }
+
+    /**
+     * Search for movies
+     *
+     * @param query
+     * @param sortBySearch
+     * @param page
+     * @param callback
+     */
+    public void searchMovies(final String query, String sortBySearch, int page, final OnGetRepositoryCallback callback) {
+
+        Callback<MoviesResponse> call = new Callback<MoviesResponse>() {
+            @Override
+            public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
+                if (response.isSuccessful()) {
+                    MoviesResponse moviesResponse = response.body();
+                    if (moviesResponse != null && moviesResponse.getMovies() != null) {
+                        callback.onSuccess(moviesResponse.getPage(), moviesResponse.getMovies());
+                    } else {
+                        callback.onError();
+                    }
+                } else {
+                    callback.onError();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MoviesResponse> call, Throwable t) {
+                callback.onError();
+            }
+        };
+
+        switch (sortBySearch) {
+            case SEARCH:
+                api.searchTitles(query, BuildConfig.TMDB_API_KEY, LANGUAGE, page)
+                        .enqueue(call);
+                break;
+        }
+    }
+
 }

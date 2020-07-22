@@ -7,7 +7,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,8 +34,7 @@ public class MovieActivity extends AppCompatActivity {
     private TextView movieOverviewLabel;
     private TextView movieReleaseDate;
     private RatingBar movieRating;
-    private LinearLayout movieTrailers;
-    private LinearLayout movieReviews;
+
 
     private MoviesRepository moviesRepository;
     private int movieId;
@@ -67,8 +65,7 @@ public class MovieActivity extends AppCompatActivity {
         movieOverviewLabel = findViewById(R.id.summaryLabel);
         movieReleaseDate = findViewById(R.id.movieDetailsReleaseDate);
         movieRating = findViewById(R.id.movieDetailsRating);
-        movieTrailers = findViewById(R.id.movieTrailers);
-        movieReviews = findViewById(R.id.movieReviews);
+
 
         getMovie();
     }
@@ -88,10 +85,19 @@ public class MovieActivity extends AppCompatActivity {
                 getGenres(movie);
                 movieReleaseDate.setText(movie.getReleaseDate());
                 if (!isFinishing()) {
-                    Glide.with(MovieActivity.this)
-                            .load(IMAGE_URL + movie.getBackdrop())
-                            .apply(RequestOptions.placeholderOf(R.color.colorAccent))
-                            .into(movieBackdrop);
+                    if(movie.getBackdrop()==null){
+                        Glide.with(MovieActivity.this)
+                                .load(R.drawable.empty)
+                                .apply(RequestOptions.placeholderOf(R.color.colorAccent))
+                                .into(movieBackdrop);
+
+                    }else{
+                        Glide.with(MovieActivity.this)
+                                .load(IMAGE_URL + movie.getBackdrop())
+                                .apply(RequestOptions.placeholderOf(R.color.colorAccent))
+                                .into(movieBackdrop);
+                    }
+
                 }
             }
 

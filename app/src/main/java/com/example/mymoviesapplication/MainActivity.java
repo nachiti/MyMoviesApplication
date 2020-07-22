@@ -9,12 +9,15 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mymoviesapplication.Inter.OnGetRepositoryCallback;
 import com.example.mymoviesapplication.Inter.OnMoviesClickCallback;
 import com.example.mymoviesapplication.adapter.MoviesAdapter;
 import com.example.mymoviesapplication.database.FavoriteDatabase;
@@ -26,13 +29,17 @@ import com.example.mymoviesapplication.repository.MoviesRepository;
 
 import java.util.List;
 
+
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     private RecyclerView recycleVewMoviesList;
     private MoviesAdapter adapter;
+    private EditText searchTerm;
+
 
     private MoviesRepository moviesRepository;
-    public static int i=0;
+    public static int i = 0;
 
     private List<Genre> movieGenres;
     public static FavoriteDatabase favoriteDatabase;
@@ -41,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private int currentPage = 1;
 
     private String sortBy = MoviesRepository.POPULAR;
+    private String sSearch = MoviesRepository.SEARCH;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,16 +59,28 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         moviesRepository = MoviesRepository.getInstance();
-
+        // final PresenterContract presenterContract = new Pr
         recycleVewMoviesList = findViewById(R.id.movies_list);
         recycleVewMoviesList.setLayoutManager(new LinearLayoutManager(this));
+        searchTerm = findViewById(R.id.searchTerm);
+        favoriteDatabase = Room.databaseBuilder(getApplicationContext(), FavoriteDatabase.class, "myfavdb").allowMainThreadQueries().build();
 
-        favoriteDatabase= Room.databaseBuilder(getApplicationContext(),FavoriteDatabase.class,"myfavdb").allowMainThreadQueries().build();
+        //search term
+        searchTerm.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                currentPage = 1;
 
+                Log.i(TAG, "Search term entered is: " + searchTerm.getText().toString());
+                searchMovieTitles(searchTerm.getText().toString(), currentPage);
+                return false;
+            }
+        });
         setupOnScrollListener();
         getGenres();
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -69,9 +89,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * depend de la item clicker se lance une methode :
-     *      - soit afficher les itemes de menu
-     *      - soit afficher la list favories.
+     * -depend de la item clicker se lance une methode :
+     * - soit afficher les itemes de menu
+     * - soit afficher la list favories.
+     *
      * @param item
      * @return
      */
@@ -82,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 showSortMenu();
                 return true;
             case R.id.favoris:
-                startActivity(new Intent(MainActivity.this,FavoriteListActivity.class));
+                startActivity(new Intent(MainActivity.this, FavoriteListActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -167,20 +188,21 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * recuperer the movie par rapport a une page
+     *
      * @param page
      */
 
     private void getMovies(int page) {
         isFetchingMovies = true;
-        moviesRepository.getMovies(page,sortBy,new OnGetMoviesCallback() {
+        moviesRepository.getMovies(page, sortBy, new OnGetMoviesCallback() {
             @Override
             public void onSuccess(int page, List<Movie> movies) {
                 Log.d("MoviesRepository", "Current Page = " + page);
                 if (adapter == null) {
-                    adapter = new MoviesAdapter(movies, movieGenres,callback);
-                   recycleVewMoviesList.setAdapter(adapter);
+                    adapter = new MoviesAdapter(movies, movieGenres, callback);
+                    recycleVewMoviesList.setAdapter(adapter);
                 } else {
-                    if(page==1){
+                    if (page == 1) {
                         adapter.clearMovies();
                     }
                     adapter.appendMovies(movies);
@@ -197,6 +219,41 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Receives the search query from the View and calls the repository
+     *
+     * @param title
+     */
+    private void searchMovieTitles(String title, int page) {
+        Log.i(TAG, "Search term entered is: " + title);
+        isFetchingMovies = true;
+        moviesRepository.searchMovies(title, sSearch, page,
+                new OnGetRepositoryCallback() {
+                    @Override
+                    public void onSuccess(int page, List<Movie> movies) {
+                        if (adapter == null) {
+                            adapter = new MoviesAdapter(movies, movieGenres, callback);
+                            recycleVewMoviesList.setAdapter(adapter);
+                        } else {
+                            if (currentPage == 1) {
+                                adapter.clearMovies();
+                            }
+                            adapter.appendMovies(movies);
+                        }
+                        currentPage = page;
+                        isFetchingMovies = false;
+                        setTitle(getString(R.string.enter_search_keyword));
+
+                    }
+
+                    @Override
+                    public void onError() {
+                        showError();
+                    }
+                });
+
+    }
+
     OnMoviesClickCallback callback = new OnMoviesClickCallback() {
         @Override
         public void onClick(Movie movie) {
@@ -205,7 +262,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
     };
-
 
 
     private void setTitle() {

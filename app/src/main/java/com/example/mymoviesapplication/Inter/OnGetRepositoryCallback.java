@@ -4,7 +4,8 @@ import com.example.mymoviesapplication.model.Movie;
 
 import java.util.List;
 
-public interface OnGetMoviesCallback {
+
+public interface OnGetRepositoryCallback {
 
     void onSuccess(int page,List<Movie> movies);
     void onError();
