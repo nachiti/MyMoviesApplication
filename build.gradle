@@ -19,6 +19,8 @@ allprojects {
         maven{
             url "http://maven.google.com"
         }
+        maven
+                { url "https://jitpack.io" }
     }
 }
 

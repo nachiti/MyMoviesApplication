@@ -35,6 +35,7 @@ android {
 
 dependencies {
 
+    implementation 'com.github.GrenderG:Toasty:1.2.8'
 
     implementation 'com.squareup.picasso:picasso:2.4.0'
     implementation fileTree(dir: 'libs', include: ['*.jar'])

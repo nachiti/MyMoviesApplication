@@ -98,10 +98,8 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
 
             this.favoriteList = favoriteList;
             title.setText(favoriteList.getTitle());
-            //System.out.println("titleeeeeeeeeeeeeeee       :" +title.getText());
             releaseDate.setText(favoriteList.getReleaseDate());
 
-            //System.out.println("releaseDateeeeeeeeeeeeee    :" +releaseDate.getText());
             title.setText(favoriteList.getTitle());
             rating.setText(String.valueOf(favoriteList.getRating()));
 
@@ -109,9 +107,6 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                     .load(IMAGE_URL + favoriteList.getPosterPath())
                     .apply(RequestOptions.placeholderOf(R.color.colorAccent))
                     .into(poster);
-
-            //System.out.println("toString 83"+favoriteList.toString());
-
         }
 
 

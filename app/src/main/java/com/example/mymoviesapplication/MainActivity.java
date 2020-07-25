@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
 
     private List<Genre> movieGenres;
     public static FavoriteDatabase favoriteDatabase;
-    Button btn;
     private boolean isFetchingMovies;
     private int currentPage = 1;
 
@@ -59,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         moviesRepository = MoviesRepository.getInstance();
-        // final PresenterContract presenterContract = new Pr
         recycleVewMoviesList = findViewById(R.id.movies_list);
         recycleVewMoviesList.setLayoutManager(new LinearLayoutManager(this));
         searchTerm = findViewById(R.id.searchTerm);
@@ -94,7 +92,8 @@ public class MainActivity extends AppCompatActivity {
      * - soit afficher la list favories.
      *
      * @param item
-     * @return
+     * @return   - afficher les itemes de menu
+     *           - afficher la list favorie
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

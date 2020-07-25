@@ -7,11 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.mymoviesapplication.Inter.OnMoviesClickCallback;
 import com.example.mymoviesapplication.MainActivity;
+import com.example.mymoviesapplication.MovieActivity;
 import com.example.mymoviesapplication.R;
 import com.example.mymoviesapplication.model.FavoriteList;
 import com.example.mymoviesapplication.model.Genre;
@@ -19,9 +21,12 @@ import com.example.mymoviesapplication.model.Movie;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import es.dmoral.toasty.Toasty;
+
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
     private String IMAGE_URL = "http://image.tmdb.org/t/p/w500";
-
+    private Boolean resultfavoriteBoolean ;
     private List<Genre> allGenres;
     private List<Movie> movies;
 
@@ -77,10 +82,14 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
                 if (MainActivity.favoriteDatabase.favoriteDao().isFavorite(id)!=1){
                     holder.fav_btn.setImageResource(R.drawable.favourite);
                     MainActivity.favoriteDatabase.favoriteDao().addData(favoriteList);
+                    resultfavoriteBoolean =true;
+
 
                 }else {
                     holder.fav_btn.setImageResource(R.drawable.star);
                     MainActivity.favoriteDatabase.favoriteDao().delete(favoriteList);
+                    resultfavoriteBoolean =false;
+
 
                 }
 
@@ -89,7 +98,12 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         });
     }
 
-    @Override
+    public boolean ResultfavoriteBoolean(){
+        return resultfavoriteBoolean;
+    }
+
+
+        @Override
     public int getItemCount() {
         return movies.size();
     }

@@ -7,11 +7,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.mymoviesapplication.adapter.FavoriteAdapter;
 import com.example.mymoviesapplication.model.FavoriteList;
 
 import java.util.List;
+
+import es.dmoral.toasty.Toasty;
 
 public class FavoriteListActivity extends AppCompatActivity {
 
@@ -58,7 +61,9 @@ public class FavoriteListActivity extends AppCompatActivity {
      */
     public void showListEmpty(){
         imageViewEmpty.setVisibility(View.VISIBLE);
+
         rv.setVisibility(View.GONE);
+
     }
     public void showListNotEmpty(){
         imageViewEmpty.setVisibility(View.GONE);
@@ -72,12 +77,21 @@ public class FavoriteListActivity extends AppCompatActivity {
         MainActivity.favoriteDatabase.favoriteDao().delete(favoriteLists.get(position));
         favoriteLists.remove(position);
         adapter.notifyItemRemoved(position);
+        removeSuccess();
 
         if (listFavorisIsEmpty(favoriteLists)){
             showListEmpty();
         }else {
             showListNotEmpty();
         }
+    }
+
+    private void removeSuccess() {
+        Toasty.success(this,"Remove Success", Toast.LENGTH_SHORT).show();
+    }
+
+    private void listEmpty() {
+        Toasty.error(this,"Empty List favorites ", Toast.LENGTH_SHORT).show();
     }
 
     /**
