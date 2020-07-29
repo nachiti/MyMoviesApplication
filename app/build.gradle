@@ -20,21 +20,23 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    buildTypes.each {
+
+/*    buildTypes.each {
         Properties properties = new Properties()
         properties.load(project.rootProject.file("local.properties").newDataInputStream())
-        def tmdbApiKey = properties.getProperty("tmdb_api_key", "")
+        def tmdbApiKey = properties.getProperty("tmdb_api_key", "1e5c997fdc17d0449bbe0a83854fd1ec")
 
         it.buildConfigField 'String', "TMDB_API_KEY", tmdbApiKey
 
         it.resValue 'string', "api_key", tmdbApiKey
 
-    }
+    }*/
 
 }
 
 dependencies {
 
+    implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
     implementation 'com.github.GrenderG:Toasty:1.2.8'
 
     implementation 'com.squareup.picasso:picasso:2.4.0'

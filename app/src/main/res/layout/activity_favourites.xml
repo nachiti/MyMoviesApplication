@@ -6,22 +6,46 @@
     android:layout_height="match_parent"
     tools:context=".FavoriteListActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbarFavoris"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Favoris"
+            android:textColor="@color/colorBlanc"
+            android:textSize="24sp" />
+
+    </android.support.v7.widget.Toolbar>
 
     <ImageView
         android:id="@+id/imageView_empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/empty_list"
-        android:visibility="gone"
-        >
+        android:visibility="gone" />
 
-    </ImageView>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rec"
-        tools:listitem="@layout/favourites_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        android:layout_below="@+id/toolbarFavoris"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        tools:listitem="@layout/favourites_list">
 
     </android.support.v7.widget.RecyclerView>
 

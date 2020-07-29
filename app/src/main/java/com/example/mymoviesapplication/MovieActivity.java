@@ -1,7 +1,10 @@
 package com.example.mymoviesapplication;
 
 import android.content.Intent;
+
+import android.net.Uri;
 import android.os.Bundle;
+
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -13,11 +16,13 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+
 import com.example.mymoviesapplication.model.Genre;
 import com.example.mymoviesapplication.model.Movie;
 import com.example.mymoviesapplication.Inter.OnGetGenresCallback;
 import com.example.mymoviesapplication.Inter.OnGetMovieCallback;
 import com.example.mymoviesapplication.repository.MoviesRepository;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,11 +93,11 @@ public class MovieActivity extends AppCompatActivity {
                     if(movie.getBackdrop()==null){
                         Glide.with(MovieActivity.this)
                                 .load(R.drawable.empty)
+                                .centerCrop()
                                 .apply(RequestOptions.placeholderOf(R.color.colorAccent))
                                 .into(movieBackdrop);
-
                     }else{
-                        Glide.with(MovieActivity.this)
+                       Glide.with(MovieActivity.this)
                                 .load(IMAGE_URL + movie.getBackdrop())
                                 .apply(RequestOptions.placeholderOf(R.color.colorAccent))
                                 .into(movieBackdrop);

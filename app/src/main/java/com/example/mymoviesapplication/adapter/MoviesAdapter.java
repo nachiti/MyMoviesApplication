@@ -1,5 +1,6 @@
 package com.example.mymoviesapplication.adapter;
 
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -13,23 +14,26 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.mymoviesapplication.Inter.OnMoviesClickCallback;
 import com.example.mymoviesapplication.MainActivity;
-import com.example.mymoviesapplication.MovieActivity;
 import com.example.mymoviesapplication.R;
 import com.example.mymoviesapplication.model.FavoriteList;
 import com.example.mymoviesapplication.model.Genre;
 import com.example.mymoviesapplication.model.Movie;
 
+import com.jakewharton.picasso.OkHttp3Downloader;
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import es.dmoral.toasty.Toasty;
+import okhttp3.OkHttpClient;
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
     private String IMAGE_URL = "http://image.tmdb.org/t/p/w500";
     private Boolean resultfavoriteBoolean ;
     private List<Genre> allGenres;
     private List<Movie> movies;
-
+    private static  Picasso picasso;
 
     private OnMoviesClickCallback callback;
 
@@ -44,6 +48,9 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie, parent, false);
+        picasso = new Picasso.Builder(parent.getContext().getApplicationContext())
+                .downloader(new OkHttp3Downloader(new OkHttpClient()))
+                .build();
         return new MovieViewHolder(view);
     }
 
@@ -54,11 +61,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
         // for favorite
         if (MainActivity.favoriteDatabase.favoriteDao().isFavorite(movieList.getId())==1) {
-            holder.fav_btn.setImageResource(R.drawable.favourite);//noir
+            holder.fav_btn.setImageResource(R.drawable.ic_is_favorite);
             System.out.println("white");
         }
         else
-            holder.fav_btn.setImageResource(R.drawable.star);//blanc
+            holder.fav_btn.setImageResource(R.drawable.ic_isnot_favorite);
 
             holder.fav_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,13 +87,13 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
                 favoriteList.setRating(rating);
 
                 if (MainActivity.favoriteDatabase.favoriteDao().isFavorite(id)!=1){
-                    holder.fav_btn.setImageResource(R.drawable.favourite);
+                    holder.fav_btn.setImageResource(R.drawable.ic_is_favorite);
                     MainActivity.favoriteDatabase.favoriteDao().addData(favoriteList);
                     resultfavoriteBoolean =true;
 
 
                 }else {
-                    holder.fav_btn.setImageResource(R.drawable.star);
+                    holder.fav_btn.setImageResource(R.drawable.ic_isnot_favorite);
                     MainActivity.favoriteDatabase.favoriteDao().delete(favoriteList);
                     resultfavoriteBoolean =false;
 
@@ -139,7 +146,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         }
 
         /**
-         * rempler les champs des movie par les inforlation recupere
+         * rempler les champs des movie par les information recuperé
          * @param movie
          */
         public void bind(Movie movie) {

@@ -103,10 +103,18 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
             title.setText(favoriteList.getTitle());
             rating.setText(String.valueOf(favoriteList.getRating()));
 
-            Glide.with(itemView)
-                    .load(IMAGE_URL + favoriteList.getPosterPath())
-                    .apply(RequestOptions.placeholderOf(R.color.colorAccent))
-                    .into(poster);
+            if(favoriteList.getPosterPath()==null){
+                Glide.with(itemView)
+                        .load(R.drawable.empty)
+                        .apply(RequestOptions.placeholderOf(R.color.colorAccent))
+                        .into(poster);
+            }else{
+                Glide.with(itemView)
+                        .load(IMAGE_URL + favoriteList.getPosterPath())
+                        .apply(RequestOptions.placeholderOf(R.color.colorAccent))
+                        .into(poster);
+            }
+
         }
 
 

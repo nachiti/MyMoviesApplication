@@ -3,7 +3,6 @@ package com.example.mymoviesapplication.repository;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.example.mymoviesapplication.BuildConfig;
 import com.example.mymoviesapplication.Inter.OnGetRepositoryCallback;
 import com.example.mymoviesapplication.model.GenresResponse;
 import com.example.mymoviesapplication.model.Movie;
@@ -24,7 +23,10 @@ public class MoviesRepository {
     private static final String TAG = MoviesRepository.class.getSimpleName();
 
     private static final String BASE_URL = "https://api.themoviedb.org/3/";
+    public static final String TMDB_API_KEY ="1e5c997fdc17d0449bbe0a83854fd1ec" ;
+
     private static final String LANGUAGE = "en-US";
+
 
     public static final String POPULAR = "popular";
     public static final String TOP_RATED = "top_rated";
@@ -56,7 +58,7 @@ public class MoviesRepository {
 
     public void getMovies(int page, final OnGetMoviesCallback callback) {
         Log.d("MoviesRepository", "Next Page = " + page);
-        api.getPopularMovies(BuildConfig.TMDB_API_KEY, LANGUAGE, page)
+        api.getPopularMovies(TMDB_API_KEY, LANGUAGE, page)
                 .enqueue(new Callback<MoviesResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<MoviesResponse> call, @NonNull Response<MoviesResponse> response) {
@@ -103,22 +105,22 @@ public class MoviesRepository {
 
         switch (sortBy) {
             case TOP_RATED:
-                api.getTopRatedMovies(BuildConfig.TMDB_API_KEY, LANGUAGE, page)
+                api.getTopRatedMovies(TMDB_API_KEY, LANGUAGE, page)
                         .enqueue(call);
                 break;
             case UPCOMING:
-                api.getUpcomingMovies(BuildConfig.TMDB_API_KEY, LANGUAGE, page)
+                api.getUpcomingMovies(TMDB_API_KEY, LANGUAGE, page)
                         .enqueue(call);
                 break;
             //
             case NOW_PLAYING:
-                api.getNowPlayingMovies(BuildConfig.TMDB_API_KEY, LANGUAGE, page)
+                api.getNowPlayingMovies(TMDB_API_KEY, LANGUAGE, page)
                         .enqueue(call);
                 break;
             //
             case POPULAR:
             default:
-                api.getPopularMovies(BuildConfig.TMDB_API_KEY, LANGUAGE, page)
+                api.getPopularMovies(TMDB_API_KEY, LANGUAGE, page)
                         .enqueue(call);
                 break;
         }
@@ -130,7 +132,7 @@ public class MoviesRepository {
      * @param callback
      */
     public void getGenres(final OnGetGenresCallback callback) {
-        api.getGenres(BuildConfig.TMDB_API_KEY, LANGUAGE)
+        api.getGenres(TMDB_API_KEY, LANGUAGE)
                 .enqueue(new Callback<GenresResponse>() {
                     @Override
                     public void onResponse(Call<GenresResponse> call, Response<GenresResponse> response) {
@@ -161,7 +163,7 @@ public class MoviesRepository {
      * @param callback
      */
     public void getMovie(int movieId, final OnGetMovieCallback callback) {
-        api.getMovie(movieId, BuildConfig.TMDB_API_KEY, LANGUAGE)
+        api.getMovie(movieId, TMDB_API_KEY, LANGUAGE)
                 .enqueue(new Callback<Movie>() {
                     @Override
                     public void onResponse(Call<Movie> call, Response<Movie> response) {
@@ -217,7 +219,7 @@ public class MoviesRepository {
 
         switch (sortBySearch) {
             case SEARCH:
-                api.searchTitles(query, BuildConfig.TMDB_API_KEY, LANGUAGE, page)
+                api.searchTitles(query, TMDB_API_KEY, LANGUAGE, page)
                         .enqueue(call);
                 break;
         }
